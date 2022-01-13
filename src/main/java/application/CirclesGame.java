@@ -12,7 +12,7 @@ public class CirclesGame extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 		Logger.info("Starting CirclesGame");
-		app = new Controller(stage, "config.json", "CirclesGame.csv");
+		app = new Controller(stage, "config.json", "./CirclesGame.csv");
 		app.show();
 	}
 	
