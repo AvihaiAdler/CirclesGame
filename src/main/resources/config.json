@@ -1,0 +1,25 @@
+{
+	"number_of_games": 3,
+	"starting_difficulty_level": 5,
+	"host": "localhost",
+	"port": 50000,
+	"columns": 
+	[
+		"Session", 
+		"TimeStamp", 
+		"Game#", 
+		"Response time (millis)", 
+		"Difficulty level",
+		"Circles_count_left", 
+		"Circles_count_right", 
+		"User answer", 
+		"Visual feedback", 
+		"Image name"
+	],
+	"images": {
+		"images/crying.png": "positive",
+		"images/slightly_smiling.png": "negative",
+		"images/smiling.png": "positive",
+		"images/unhappy.png": "negative"
+	}
+}
