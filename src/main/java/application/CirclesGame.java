@@ -16,6 +16,10 @@ public class CirclesGame extends Application {
 		app.show();
 	}
 	
+	public void stop() {
+		app.close();
+	}
+	
 	public static void main(String[] args) {
 		launch(args);
 	}

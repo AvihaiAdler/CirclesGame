@@ -2,7 +2,7 @@
 	"number_of_games": 3,
 	"starting_difficulty_level": 5,
 	"host": "localhost",
-	"port": 50000,
+	"port": 15361,
 	"columns": 
 	[
 		"Session", 

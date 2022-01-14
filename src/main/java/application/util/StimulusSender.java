@@ -32,7 +32,7 @@ public class StimulusSender {
 			Logger.info("Opening socket on: " + host + ":" + port);
 			clientSocket = new Socket(host, port);
 			Logger.info("Opening a data stream for port " + clientSocket.getPort());
-			outputStream = new DataOutputStream(clientSocket.getOutputStream());			
+			outputStream = new DataOutputStream(clientSocket.getOutputStream());	
 		} catch (IOException e) {
 			throw new IOException("Something went wrong when trying to connect to port " + this.port + "\n" + e);
 		}
@@ -40,16 +40,20 @@ public class StimulusSender {
 
 	// Close connection
 	public void close() throws IOException {
-		outputStream.flush();
-		Logger.info("Closing data stream");
-		outputStream.close();
-		Logger.info("Cosing socket");
-		clientSocket.close();
+		if(outputStream != null) {
+			outputStream.flush();
+			Logger.info("Closing data stream");
+			outputStream.close();			
+		}
+		if(clientSocket != null) {
+			Logger.info("Cosing socket");
+			clientSocket.close();			
+		}
 	}
 
 	// Send stimulation with a timestamp.
 	public void send(long stimulation, long timestamp) throws Exception {
-		var b = ByteBuffer.allocate(24);
+		var b = ByteBuffer.allocate(64);
 		b.order(ByteOrder.LITTLE_ENDIAN); // Assumes AS runs on LE architecture
 		b.putLong(stimulation); // Stimulation id
 		b.putLong(timestamp); // Timestamp: 0 = immediate

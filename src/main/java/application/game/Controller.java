@@ -161,9 +161,11 @@ public class Controller {
 			break;
 		case Image:
 			saveResults(getData(), true);
-			
+
 			currentScreen = screenGenerator.createCrossScreen(Color.rgb(220, 220, 220), 40, 8);
 			gamesCounter++;
+			
+			
 			createTimer(3.5 * 1000);
 			break;
 		}
@@ -195,11 +197,11 @@ public class Controller {
 			var containter = (CirclesPanelContainer) lastCirclesScreen;
 			var circlesOnTheLeft = ((CirclesPanel) containter.getInner().getChildren().get(0)).getSpheresCount();
 			var circlesOnTheRight = ((CirclesPanel) containter.getInner().getChildren().get(1)).getSpheresCount();
-			yield Integer.toString(gamesCounter + 1) + ","
+			yield (gamesCounter + 1) + ","
 					+ (interactedMilliTime == 0 ? "No response"
-							: Long.toString(interactedMilliTime - displayedMilliTime))
-					+ "," + Integer.toString(difficultyLvl) + "," + Integer.toString(circlesOnTheLeft) + ","
-					+ Integer.toString(circlesOnTheRight) + "," + String.valueOf(answer) + ",";
+							: (interactedMilliTime - displayedMilliTime))
+					+ "," + difficultyLvl + "," + circlesOnTheLeft + ","
+					+ circlesOnTheRight + "," + answer + ",";
 		}
 		case Image -> {
 			var imgPanel = (ImagePanel) currentScreen;
@@ -210,13 +212,20 @@ public class Controller {
 	}
 	
 	public void terminate() {
+		Logger.info("Terminating program");
+		Platform.exit();
+	}
+	
+	/*
+	 * must be called upon destruction
+	 */
+	public void close() {
 		try {
 			dataHandler.close();
+			sender.close();
 		} catch (IOException e) {
 			Logger.error(e);
 		}
-		Logger.info("Terminating program");
-		Platform.exit();
 	}
 	
 	/*
