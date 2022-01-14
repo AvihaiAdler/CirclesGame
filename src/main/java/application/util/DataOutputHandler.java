@@ -42,9 +42,22 @@ public class DataOutputHandler {
 	}
 
 	/*
-	 * writes a string 'as is' into a file. the string must be formatted
+	 * writes a string 'as is' into a file an end line character will be added to the end of the string. 
+	 * the string must be formatted properly
 	 */
-	public void writeData(String data, DataType type) throws IOException {
+	public void writeLine(String data, DataType type) throws IOException {
+		writeData(data, type, true);
+	}
+	
+	/*
+	 * writes a string 'as is' into a file. 
+	 * the string must be formatted properly
+	 */
+	public void write(String data, DataType type) throws IOException {
+		writeData(data, type, false);
+	}
+	
+	private void writeData(String data, DataType type, boolean endLine) throws IOException {
 		switch (type) {
 		case Title:
 			if (hasTitle)
@@ -52,13 +65,15 @@ public class DataOutputHandler {
 		case Data:
 			Logger.info("Writing data: [ " + data + " ] to " + fileName);
 			writer.write(data);
-			writer.newLine();
-			writer.flush();
+			
+			if(endLine)
+				writer.newLine();
 			break;
 		}
 	}
 
-	public void closeStream() throws IOException {
+	public void close() throws IOException {
+		writer.flush();
 		Logger.info("Closing data stream");
 		writer.close();
 	}

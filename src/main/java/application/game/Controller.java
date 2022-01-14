@@ -51,8 +51,6 @@ public class Controller {
 	private Stage stage;	
 	// represent the user's answer (right/wrong)
 	private boolean answer;
-	// the results of each game can be added here. each data object will form one line in the .csv file
-	private StringBuffer data;
 	// represent all configuration values read from config.json
 	private Map<String, Object> configValues;
 	private StimulusSender sender;
@@ -76,8 +74,6 @@ public class Controller {
 		} catch (IOException io) {
 			Logger.error(io);
 		}
-		
-		data = new StringBuffer();
 		
 		var screenDim = Screen.getPrimary().getBounds();
 		width = screenDim.getWidth() / 2;
@@ -138,16 +134,12 @@ public class Controller {
 	private void showNext() {
 		switch (currentScreen.getType()) {
 		case Cross:
-			data.append(getData());
-			Logger.info("Getting data for [" + currentScreen.getType() + "] screen\n" + "[" + data + "]");
+			saveResults(getData(), false);
 			
 			currentScreen = screenGenerator.createCirclesScreen(10, 15, Color.rgb(220, 220, 220), difficultyLvl);
 			createTimer(0.5 * 1000);
 			break;
 		case Circles:
-			data.append(getData());
-			Logger.info("Getting data for [" + currentScreen.getType() + "] screen\n" + "[" + data + "]");
-			
 			lastCirclesScreen = currentScreen;
 			currentScreen = screenGenerator.createBlankPanel();
 			displayedMilliTime = System.currentTimeMillis();
@@ -155,8 +147,7 @@ public class Controller {
 			createTimer(1.4 * 1000);
 			break;
 		case Blank:
-			data.append(getData());
-			Logger.info("Getting data for [" + currentScreen.getType() + "] screen\n" + "[" + data + "]");
+			saveResults(getData(), false);
 			
 			// change difficulty
 			if (answer && difficultyLvl > 0)
@@ -165,12 +156,11 @@ public class Controller {
 				difficultyLvl++;
 			
 			currentScreen = screenGenerator.createImagesScreen(retrieveImageAttr(), answer ? "You won!" : "You lost!");
+			answer = false;
 			createTimer(1.5 * 1000);
 			break;
 		case Image:
-			data.append(getData());
-			Logger.info("Getting data for [" + currentScreen.getType() + "] screen\n" + "[" + data + "]");
-			saveResults();
+			saveResults(getData(), true);
 			
 			currentScreen = screenGenerator.createCrossScreen(Color.rgb(220, 220, 220), 40, 8);
 			gamesCounter++;
@@ -188,6 +178,7 @@ public class Controller {
 	}
 	
 	private String getData() {
+		Logger.info("Getting data for [" + currentScreen.getType() + "] screen");
 		return switch (currentScreen.getType()) {
 		case Cross -> {
 			var session = "-";
@@ -219,6 +210,11 @@ public class Controller {
 	}
 	
 	public void terminate() {
+		try {
+			dataHandler.close();
+		} catch (IOException e) {
+			Logger.error(e);
+		}
 		Logger.info("Terminating program");
 		Platform.exit();
 	}
@@ -226,15 +222,15 @@ public class Controller {
 	/*
 	 * saving the result for a series of 3 games
 	 */
-	private void saveResults() {
+	private void saveResults(String data, boolean endLine) {
 		try {
-			dataHandler.writeData(data.toString(), DataType.Data);
+			if(endLine)
+				dataHandler.writeLine(data, DataType.Data);
+			else
+				dataHandler.write(data, DataType.Data);
 		} catch (IOException e) {
 			Logger.error(e);
 		}
-
-		// deleting data for the next series of games
-		data.delete(0, data.length());
 	}
 	
 	public ImageWrapper retrieveImageAttr() {
@@ -265,7 +261,7 @@ public class Controller {
 		
 
 		try {
-			dataHandler.writeData(title, DataType.Title);
+			dataHandler.writeLine(title, DataType.Title);
 		} catch (IOException e) {
 			Logger.error(e);
 		}
