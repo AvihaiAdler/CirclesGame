@@ -198,10 +198,8 @@ public class Controller {
 			var circlesOnTheLeft = ((CirclesPanel) containter.getInner().getChildren().get(0)).getSpheresCount();
 			var circlesOnTheRight = ((CirclesPanel) containter.getInner().getChildren().get(1)).getSpheresCount();
 			yield (gamesCounter + 1) + ","
-					+ (interactedMilliTime == 0 ? "No response"
-							: (interactedMilliTime - displayedMilliTime))
-					+ "," + difficultyLvl + "," + circlesOnTheLeft + ","
-					+ circlesOnTheRight + "," + answer + ",";
+					+ (interactedMilliTime == 0 ? "No response" : (interactedMilliTime - displayedMilliTime)) + ","
+					+ difficultyLvl + "," + circlesOnTheLeft + "," + circlesOnTheRight + "," + answer + ",";
 		}
 		case Image -> {
 			var imgPanel = (ImagePanel) currentScreen;
