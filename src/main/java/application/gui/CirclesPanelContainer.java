@@ -3,7 +3,6 @@ package application.gui;
 import application.util.ScreenType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-//import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -47,10 +46,6 @@ public class CirclesPanelContainer extends StackPane implements Panel {
 	}
 
 	public void setProperties() {
-//		setAlignment(Pos.CENTER);
-//		setPadding(new Insets(1));
-//		inner.setHgap(2);
-//		inner.setVgap(2);
 		inner.setAlignment(Pos.CENTER);
 		inner.setPadding(new Insets(10));
 	}

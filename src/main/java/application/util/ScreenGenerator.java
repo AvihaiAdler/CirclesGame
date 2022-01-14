@@ -58,22 +58,11 @@ public class ScreenGenerator {
 		}
 
 		// init 2 sub Panels, left and right		
-//		var inner = new GridPane();
-//		inner.setAlignment(Pos.CENTER);
-//		inner.setPadding(new Insets(3));
-//		inner.setHgap(2);
-//		inner.setVgap(2);
-
 		var radius = width / 90; // radius of each circle
 		var left = new CirclesPanel(circlesOnLeft, radius, color, Sides.Left, width / 2, height * 0.9);
 		var right = new CirclesPanel(circlesOnRight, radius, color, Sides.Right, width / 2, height * 0.9);
 
-		// (Pane, col, row)
-//		inner.add(left, 0, 0);
-//		inner.add(right, 1, 0);
-//
-//		// wrapper panel
-//		var containerPanel = new CirclesPanelContainer(inner, ScreenType.Circles, width, height);
+		// wrapper panel
 		var containerPanel = new CirclesPanelContainer(new HBox(left, right), ScreenType.Circles, width, height);
 		containerPanel.addToPanel();
 

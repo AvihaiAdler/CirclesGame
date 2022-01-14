@@ -14,8 +14,7 @@ public class CrossPanel extends StackPane implements Panel {
 	private Line vertical;
 	private final ScreenType type;
 
-	// represents a factor to determine how much the line will 'extends' to the
-	// sides
+	// represents a factor to determine how much the line will 'extends' to the sides
 	private int proportion;
 
 	private final Color color;
