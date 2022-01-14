@@ -1,4 +1,4 @@
-package application.util;
+package application.dao;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -63,7 +63,7 @@ public class DataOutputHandler {
 			if (hasTitle)
 				return;
 		case Data:
-			Logger.info("Writing data: [ " + data + " ] to " + fileName);
+			Logger.info("Writing data: [" + data + "] to " + fileName);
 			writer.write(data);
 			
 			if(endLine)

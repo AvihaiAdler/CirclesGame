@@ -1,4 +1,4 @@
-package application.util;
+package application.dao;
 
 public enum DataType {
 	Title("title"),

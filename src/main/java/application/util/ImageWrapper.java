@@ -1,6 +1,6 @@
-package application.game;
+package application.util;
 
-import application.util.FeedbackType;
+import application.dao.FeedbackType;
 
 public class ImageWrapper {
 	private final String name;

@@ -1,6 +1,6 @@
 package application.gui;
 
-import application.util.FeedbackType;
+import application.dao.FeedbackType;
 import application.util.ScreenType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

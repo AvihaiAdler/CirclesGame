@@ -9,17 +9,19 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.tinylog.Logger;
+
+import application.dao.ConfigureManager;
+import application.dao.DataOutputHandler;
+import application.dao.DataType;
+import application.dao.FeedbackType;
+import application.dao.StimulusSender;
 import application.gui.CirclesPanel;
 import application.gui.CirclesPanelContainer;
 import application.gui.ImagePanel;
 import application.gui.Panel;
-import application.util.ConfigureManager;
-import application.util.DataOutputHandler;
-import application.util.DataType;
-import application.util.FeedbackType;
+import application.util.ImageWrapper;
 import application.util.ScreenGenerator;
 import application.util.ScreenType;
-import application.util.StimulusSender;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -35,7 +37,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class Controller {
+public class MainWindow extends StackPane {
 	private int totalGames;
 	private final double width;
 	private final double height;
@@ -46,18 +48,14 @@ public class Controller {
 	private Timeline timer;
 	private Panel currentScreen;
 	private Panel lastCirclesScreen;
-	private StackPane panel;
-	// main GUI component
 	private Stage stage;	
-	// represent the user's answer (right/wrong)
-	private boolean answer;
-	// represent all configuration values read from config.json
+	private boolean userAnswer;
 	private Map<String, Object> configValues;
-	private StimulusSender sender;
+	private StimulusSender stimSender;
 	private final DataOutputHandler dataHandler;
 	private final ScreenGenerator screenGenerator;
 	
-	public Controller(Stage stage, String configFileName, String dataFileName) throws FileNotFoundException {
+	public MainWindow(Stage stage, String configFileName, String dataFileName) throws FileNotFoundException {
 		this.stage = stage;
 		this.dataHandler = new DataOutputHandler(dataFileName);
 
@@ -66,8 +64,8 @@ public class Controller {
 			configValues = (new ConfigureManager(configFileName)).getProperties();					
 			totalGames = (int)configValues.get("number_of_games");
 			difficultyLvl = (int) configValues.get("starting_difficulty_level");
-			sender = new StimulusSender((String)configValues.get("host"), (int)configValues.get("port"));	
-			sender.open();			
+			stimSender = new StimulusSender((String)configValues.get("host"), (int)configValues.get("port"));	
+			stimSender.open();			
 		} catch (FileNotFoundException fof) {
 			Logger.error(fof);
 			throw fof;
@@ -91,7 +89,7 @@ public class Controller {
 				var containter = (CirclesPanelContainer) lastCirclesScreen;
 				var hasMoreCircles = ((CirclesPanel) containter.getInner().getChildren().get(0))
 						.greaterThan((CirclesPanel) containter.getInner().getChildren().get(1));
-				answer = e.getCode().toString().equalsIgnoreCase(hasMoreCircles.getSide().toString()) ? true : false;
+				userAnswer = e.getCode().toString().equalsIgnoreCase(hasMoreCircles.getSide().toString()) ? true : false;
 				showNext();
 			}
 		}
@@ -115,20 +113,19 @@ public class Controller {
 	public void show() {
 		Logger.info("Constructing main screen");
 		gamesCounter = 0;
-		answer = false;
+		userAnswer = false;
 		
-		panel = new StackPane();
 		currentScreen = screenGenerator.createCrossScreen(Color.rgb(220, 220, 220), 40, 8);
-		panel.getChildren().add((Pane)currentScreen);
+		this.getChildren().add((Pane)currentScreen);
 		
-		stage.setScene(new Scene(panel, width, height, Color.BLACK));
+		stage.setScene(new Scene(this, width, height, Color.BLACK));
 		stage.setMaximized(true);
 		stage.setResizable(false);
 		stage.centerOnScreen();
-		stage.show();
 		writeCriteria();
 		
 		createTimer(3.5 * 1000);
+		stage.show();
 	}
 	
 	private void showNext() {
@@ -150,13 +147,13 @@ public class Controller {
 			saveResults(getData(), false);
 			
 			// change difficulty
-			if (answer && difficultyLvl > 0)
+			if (userAnswer && difficultyLvl > 0)
 				difficultyLvl--;
-			else if (!answer && difficultyLvl < 5)
+			else if (!userAnswer && difficultyLvl < 5)
 				difficultyLvl++;
 			
-			currentScreen = screenGenerator.createImagesScreen(retrieveImageAttr(), answer ? "You won!" : "You lost!");
-			answer = false;
+			currentScreen = screenGenerator.createImagesScreen(retrieveImageAttr(), userAnswer ? "You won!" : "You lost!");
+			userAnswer = false;
 			createTimer(1.5 * 1000);
 			break;
 		case Image:
@@ -171,9 +168,9 @@ public class Controller {
 		}
 		
 		if(gamesCounter < totalGames) {
-			Logger.info("Switching to " + currentScreen.getType().toString() + " screen");
-			panel.getChildren().clear();
-			panel.getChildren().add((Pane)currentScreen);			
+			Logger.info("Switching to " + currentScreen.getType() + " screen");
+			this.getChildren().clear();
+			this.getChildren().add((Pane)currentScreen);			
 		} else {
 			terminate();
 		}
@@ -198,13 +195,13 @@ public class Controller {
 			var circlesOnTheLeft = ((CirclesPanel) containter.getInner().getChildren().get(0)).getSpheresCount();
 			var circlesOnTheRight = ((CirclesPanel) containter.getInner().getChildren().get(1)).getSpheresCount();
 			yield (gamesCounter + 1) + ","
-					+ (interactedMilliTime == 0 ? "No response" : (interactedMilliTime - displayedMilliTime)) + ","
-					+ difficultyLvl + "," + circlesOnTheLeft + "," + circlesOnTheRight + "," + answer + ",";
+					+ (interactedMilliTime == 0 ? "no response" : (interactedMilliTime - displayedMilliTime)) + ","
+					+ difficultyLvl + "," + circlesOnTheLeft + "," + circlesOnTheRight + "," + userAnswer + ",";
 		}
 		case Image -> {
 			var imgPanel = (ImagePanel) currentScreen;
 			var imageName = imgPanel.getImageName().split("/")[1].split(".png")[0];
-			yield imgPanel.getFeedbackType().toString() + "," + imageName;
+			yield imgPanel.getFeedbackType() + "," + imageName;
 		}
 		};
 	}
@@ -220,7 +217,7 @@ public class Controller {
 	public void close() {
 		try {
 			dataHandler.close();
-			sender.close();
+			stimSender.close();
 		} catch (IOException e) {
 			Logger.error(e);
 		}

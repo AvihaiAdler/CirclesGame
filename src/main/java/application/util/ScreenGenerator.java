@@ -2,7 +2,6 @@ package application.util;
 
 import java.util.Random;
 
-import application.game.ImageWrapper;
 import application.gui.BlankPanel;
 import application.gui.CirclesPanel;
 import application.gui.CirclesPanelContainer;

@@ -1,4 +1,4 @@
-package application.util;
+package application.dao;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -42,11 +42,11 @@ public class StimulusSender {
 	public void close() throws IOException {
 		if(outputStream != null) {
 			outputStream.flush();
-			Logger.info("Closing data stream");
+			Logger.info("Closing data stream for socket");
 			outputStream.close();			
 		}
 		if(clientSocket != null) {
-			Logger.info("Cosing socket");
+			Logger.info("Cosing socket:" + port);
 			clientSocket.close();			
 		}
 	}

@@ -2,17 +2,17 @@ package application;
 
 import org.tinylog.Logger;
 
-import application.game.Controller;
+import application.game.MainWindow;
 import javafx.application.Application;
 import javafx.stage.Stage;
 	
 public class CirclesGame extends Application {
-	private Controller app;
+	private MainWindow app;
 	
 	@Override
 	public void start(Stage stage) throws Exception {
 		Logger.info("Starting CirclesGame");
-		app = new Controller(stage, "config.json", "./CirclesGame.csv");
+		app = new MainWindow(stage, "config.json", "./CirclesGame.csv");
 		app.show();
 	}
 	
