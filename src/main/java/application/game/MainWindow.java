@@ -91,7 +91,7 @@ public class MainWindow extends Stage {
 	}
 	
 	private void createTimer(double millis) {
-		Logger.info("creating a new timer with " + Double.toString(millis) + "ms delay");
+		Logger.info("Creating a new timer with " + Double.toString(millis) + "ms delay");
 		if (timer != null)
 			timer.stop();
 		timer = new Timeline(new KeyFrame(Duration.millis(millis), new EventHandler<ActionEvent>() {
