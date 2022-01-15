@@ -21,7 +21,7 @@ public class DataOutputHandler {
 		
 		try {
 			if(!createDir())
-				throw new RuntimeException("Couldn't create a directories " + fileName.substring(0, fileName.lastIndexOf('/')));
+				throw new RuntimeException("Couldn't create directories " + fileName.substring(0, fileName.lastIndexOf('/')));
 			this.writer = new BufferedWriter(new FileWriter(fileName, hasTitle));
 		} catch (IOException e) {
 			throw new RuntimeException("Something went wrong with" + fileName + ". Close all open windows and try again\n" + e);
