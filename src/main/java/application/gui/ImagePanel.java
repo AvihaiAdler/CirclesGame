@@ -1,7 +1,6 @@
 package application.gui;
 
 import application.dao.FeedbackType;
-import application.util.ScreenType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
@@ -14,17 +13,15 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
-public class ImagePanel extends BorderPane implements Panel {
+public class ImagePanel extends BorderPane {
 	private final String imageName;
 	private final FeedbackType feedbackType;
-	private final ScreenType type;
 	private final ImageView imageScreen;
 	private final Text text;
 
 	public ImagePanel(String imageName, String text, Image image, FeedbackType feedbackType) {
 		this.imageName = imageName;
 		this.feedbackType = feedbackType;
-		this.type = ScreenType.Image;
 		this.text = new Text(text);
 		imageScreen = new ImageView(image);
 		
@@ -60,10 +57,5 @@ public class ImagePanel extends BorderPane implements Panel {
 
 	public FeedbackType getFeedbackType() {
 		return feedbackType;
-	}
-
-	@Override
-	public ScreenType getType() {
-		return type;
 	}
 }

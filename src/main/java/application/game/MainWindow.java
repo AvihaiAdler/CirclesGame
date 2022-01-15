@@ -15,9 +15,8 @@ import application.dao.DataType;
 import application.dao.FeedbackType;
 import application.dao.StimulusSender;
 import application.gui.CirclesPanel;
-import application.gui.CirclesPanelContainer;
+import application.gui.Screen;
 import application.gui.ImagePanel;
-import application.gui.Panel;
 import application.util.ImageWrapper;
 import application.util.ScreenGenerator;
 import application.util.ScreenType;
@@ -26,18 +25,14 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
-public class MainWindow extends StackPane {
+public class MainWindow extends Stage {
 	private int totalGames;
 	private final double width;
 	private final double height;
@@ -46,19 +41,18 @@ public class MainWindow extends StackPane {
 	private long displayedMilliTime;
 	private long interactedMilliTime;
 	private Timeline timer;
-	private Panel currentScreen;
-	private Panel lastCirclesScreen;
-	private Stage stage;	
+	private Screen currentScreen;
+	private Screen lastCirclesScreen;	
 	private boolean userAnswer;
 	private Map<String, Object> configValues;
 	private StimulusSender stimSender;
 	private final DataOutputHandler dataHandler;
 	private final ScreenGenerator screenGenerator;
 	
-	public MainWindow(Stage stage, String configFileName, String dataFileName) throws FileNotFoundException {
-		this.stage = stage;
+	public MainWindow(String configFileName, String dataFileName) throws FileNotFoundException {
+		super();
 		this.dataHandler = new DataOutputHandler(dataFileName);
-
+		
 		try {
 			// reading configuration values
 			configValues = (new ConfigureManager(configFileName)).getProperties();					
@@ -73,12 +67,12 @@ public class MainWindow extends StackPane {
 			Logger.error(io);
 		}
 		
-		var screenDim = Screen.getPrimary().getBounds();
-		width = screenDim.getWidth() / 2;
+		var screenDim = javafx.stage.Screen.getPrimary().getBounds();
+		width = screenDim.getWidth();
 		height = screenDim.getHeight();
-		screenGenerator = new ScreenGenerator(width, height);
+		screenGenerator = new ScreenGenerator(width, height, Color.BLACK);
 		
-		stage.addEventFilter(KeyEvent.KEY_PRESSED, this::keyEventHandler);
+		this.addEventFilter(KeyEvent.KEY_PRESSED, this::keyEventHandler);
 	}
 	
 	private void keyEventHandler(KeyEvent e) {
@@ -86,9 +80,9 @@ public class MainWindow extends StackPane {
 			if (e.getCode() == KeyCode.LEFT || e.getCode() == KeyCode.RIGHT) {
 				// get the time passed between screen displayed and user interaction
 				interactedMilliTime = System.currentTimeMillis();
-				var containter = (CirclesPanelContainer) lastCirclesScreen;
-				var hasMoreCircles = ((CirclesPanel) containter.getInner().getChildren().get(0))
-						.greaterThan((CirclesPanel) containter.getInner().getChildren().get(1));
+				var containter = (Pane) lastCirclesScreen.getRoot();
+				var hasMoreCircles = ((CirclesPanel) containter.getChildren().get(0))
+						.greaterThan((CirclesPanel) containter.getChildren().get(2));
 				userAnswer = e.getCode().toString().equalsIgnoreCase(hasMoreCircles.getSide().toString()) ? true : false;
 				showNext();
 			}
@@ -110,22 +104,23 @@ public class MainWindow extends StackPane {
 		timer.play();
 	}
 	
-	public void show() {
+	public void init() {
 		Logger.info("Constructing main screen");
 		gamesCounter = 0;
 		userAnswer = false;
 		
-		currentScreen = screenGenerator.createCrossScreen(Color.rgb(220, 220, 220), 40, 8);
-		this.getChildren().add((Pane)currentScreen);
-		stage.initStyle(StageStyle.UNDECORATED);
-		stage.setScene(new Scene(this, width, height, Color.BLACK));
-		stage.setMaximized(true);
-		stage.setResizable(false);
-		stage.centerOnScreen();
+		currentScreen = screenGenerator.createCrossScreen(40, 8);
+
+//		this.initStyle(StageStyle.UNDECORATED);
+		this.setTitle("Circles Game");
+		this.setMaximized(true);
+		this.setResizable(false);
+		this.centerOnScreen();
+		this.setScene(currentScreen);
 		writeCriteria();
 		
 		createTimer(3.5 * 1000);
-		stage.show();
+		this.show();
 	}
 	
 	private void showNext() {
@@ -133,14 +128,14 @@ public class MainWindow extends StackPane {
 		case Cross:
 			saveResults(getData(), false);
 			
-			currentScreen = screenGenerator.createCirclesScreen(10, 15, Color.rgb(220, 220, 220), difficultyLvl);
+			currentScreen = screenGenerator.createCirclesScreen(10, 15, difficultyLvl);
 			createTimer(0.5 * 1000);
 			break;
 		case Circles:
 			lastCirclesScreen = currentScreen;
 			currentScreen = screenGenerator.createBlankPanel();
-			displayedMilliTime = System.currentTimeMillis();
 			interactedMilliTime = 0;
+			displayedMilliTime = System.currentTimeMillis();
 			createTimer(1.4 * 1000);
 			break;
 		case Blank:
@@ -159,9 +154,8 @@ public class MainWindow extends StackPane {
 		case Image:
 			saveResults(getData(), true);
 
-			currentScreen = screenGenerator.createCrossScreen(Color.rgb(220, 220, 220), 40, 8);
+			currentScreen = screenGenerator.createCrossScreen(40, 8);
 			gamesCounter++;
-			
 			
 			createTimer(3.5 * 1000);
 			break;
@@ -169,8 +163,8 @@ public class MainWindow extends StackPane {
 		
 		if(gamesCounter < totalGames) {
 			Logger.info("Switching to " + currentScreen.getType() + " screen");
-			this.getChildren().clear();
-			this.getChildren().add((Pane)currentScreen);			
+			this.setScene(currentScreen);		
+			this.show();
 		} else {
 			terminate();
 		}
@@ -191,15 +185,15 @@ public class MainWindow extends StackPane {
 			yield "";
 		}
 		case Blank -> {
-			var containter = (CirclesPanelContainer) lastCirclesScreen;
-			var circlesOnTheLeft = ((CirclesPanel) containter.getInner().getChildren().get(0)).getSpheresCount();
-			var circlesOnTheRight = ((CirclesPanel) containter.getInner().getChildren().get(1)).getSpheresCount();
+			var containter = (Pane) lastCirclesScreen.getRoot();
+			var circlesOnTheLeft = ((CirclesPanel) containter.getChildren().get(0)).getSpheresCount();
+			var circlesOnTheRight = ((CirclesPanel) containter.getChildren().get(2)).getSpheresCount();
 			yield (gamesCounter + 1) + ","
 					+ (interactedMilliTime == 0 ? "no response" : (interactedMilliTime - displayedMilliTime)) + ","
 					+ difficultyLvl + "," + circlesOnTheLeft + "," + circlesOnTheRight + "," + userAnswer + ",";
 		}
 		case Image -> {
-			var imgPanel = (ImagePanel) currentScreen;
+			var imgPanel = (ImagePanel)currentScreen.getRoot();
 			var imageName = imgPanel.getImageName().split("/")[1].split(".png")[0];
 			yield imgPanel.getFeedbackType() + "," + imageName;
 		}

@@ -1,18 +1,16 @@
 package application.gui;
 
-import application.util.ScreenType;
 import javafx.geometry.Insets;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
-public class CrossPanel extends StackPane implements Panel {
+public class CrossPanel extends StackPane {
 	private double width;
 	private double height;
 	private int lineWidth;
 	private Line horizontal;
 	private Line vertical;
-	private final ScreenType type;
 
 	// represents a factor to determine how much the line will 'extends' to the sides
 	private int proportion;
@@ -20,13 +18,11 @@ public class CrossPanel extends StackPane implements Panel {
 	private final Color color;
 
 	public CrossPanel(Color color, int proportion, int lineWidth, double width, double height) {
-		super();
 		this.width = width;
 		this.height = height;
 		this.proportion = proportion;
 		this.lineWidth = lineWidth;
 		this.color = color;
-		this.type = ScreenType.Cross;
 
 		setProperties();
 		constructCross();
@@ -49,10 +45,5 @@ public class CrossPanel extends StackPane implements Panel {
 
 	public void setProperties() {
 		setPadding(new Insets(3));
-	}
-
-	@Override
-	public ScreenType getType() {
-		return type;
 	}
 }

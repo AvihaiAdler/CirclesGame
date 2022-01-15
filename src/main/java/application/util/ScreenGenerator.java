@@ -1,30 +1,37 @@
 package application.util;
 
 import java.util.Random;
-
-import application.gui.BlankPanel;
 import application.gui.CirclesPanel;
-import application.gui.CirclesPanelContainer;
+import application.gui.Screen;
 import application.gui.CrossPanel;
 import application.gui.ImagePanel;
+import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
+import javafx.scene.control.Separator;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
 public class ScreenGenerator {
 	private final double width;
 	private final double height;
+	private final Color backgroundColor;
 
-	public ScreenGenerator(double screenWidth, double screenHeight) {
+	public ScreenGenerator(double screenWidth, double screenHeight, Color backgroundColor) {
 		this.width = screenWidth;
 		this.height = screenHeight;
+		this.backgroundColor = backgroundColor;
 	}
 
 	/*
 	 * Returns a circles screen. Circle numbers will be generated in the range of
 	 * [min, max] based on the difficulty level
 	 */
-	public CirclesPanelContainer createCirclesScreen(int min, int max, Color color, int difficultyLvl) {
+	public Screen createCirclesScreen(int min, int max, int difficultyLvl) {
 		var rand = new Random();
 
 		/*
@@ -57,20 +64,28 @@ public class ScreenGenerator {
 		}
 
 		// init 2 sub Panels, left and right		
-		var radius = width / 90; // radius of each circle
-		var left = new CirclesPanel(circlesOnLeft, radius, color, Sides.Left, width / 2, height * 0.9);
-		var right = new CirclesPanel(circlesOnRight, radius, color, Sides.Right, width / 2, height * 0.9);
+		var radius = width / 150; // radius of each circle
+		var left = new CirclesPanel(circlesOnLeft, radius, Color.rgb(220, 220, 220), Sides.Left, width/4, height * 0.9);
+		var right = new CirclesPanel(circlesOnRight, radius, Color.rgb(220, 220, 220), Sides.Right, width/4, height * 0.9);
+		
 		// wrapper panel
-		var containerPanel = new CirclesPanelContainer(new HBox(left, right), ScreenType.Circles, width, height);
-		containerPanel.addToPanel();
-
-		return containerPanel;
+		var separator = new Separator(Orientation.VERTICAL);
+		separator.setStyle("-fx-border-style: solid; -fx-border-width: 0 0 0 2; -fx-border-color: #c0c0c0");
+		
+		HBox.setHgrow(left, Priority.ALWAYS);
+		HBox.setHgrow(right, Priority.ALWAYS);
+		var box = new HBox(left, separator, right);
+		box.setBackground(new Background(new BackgroundFill(this.backgroundColor, null, null)));
+		box.setAlignment(Pos.CENTER);
+		box.setSpacing(50);
+		
+		return new Screen(box, ScreenType.Circles, width, height, this.backgroundColor);
 	}
 
 	/*
 	 * Returns an ImagePane consists of an image and a text below it.
 	 */
-	public ImagePanel createImagesScreen(ImageWrapper image, String str) {
+	public Screen createImagesScreen(ImageWrapper image, String str) {
 		var imageStream = this.getClass().getClassLoader().getResourceAsStream(image.getName());
 		
 		if(imageStream == null)
@@ -79,18 +94,23 @@ public class ScreenGenerator {
 		var imagePanel = new ImagePanel(image.getName(), str, img, image.getType());
 		imagePanel.fitImageToScreen(width, height);
 		imagePanel.styleText();
+		imagePanel.setBackground(new Background(new BackgroundFill(this.backgroundColor, null, null)));
 		
-		return imagePanel;
+		return new Screen(imagePanel, ScreenType.Image, width, height, backgroundColor);
 	}
 
 	/*
 	 * Creates a screen with a cross in the middle of it
 	 */
-	public CrossPanel createCrossScreen(Color color, int proportion, int lineWidth) {
-		return new CrossPanel(color, proportion, lineWidth, width, height);
+	public Screen createCrossScreen(int proportion, int lineWidth) {
+		var screen = new CrossPanel(Color.rgb(220, 220, 220), proportion, lineWidth, height, height);
+		screen.setBackground(new Background(new BackgroundFill(this.backgroundColor, null, null)));
+		return new Screen(screen, ScreenType.Cross, width, height, backgroundColor);
 	}
 
-	public BlankPanel createBlankPanel() {
-		return new BlankPanel();
+	public Screen createBlankPanel() {
+		var blank = new StackPane();
+		blank.setBackground(new Background(new BackgroundFill(this.backgroundColor, null, null)));
+		return new Screen(blank, ScreenType.Blank, width, height, backgroundColor);
 	}
 }
