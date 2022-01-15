@@ -24,6 +24,7 @@ public class CirclesPanelContainer extends StackPane implements Panel {
 		divider = new Line(this.width / 2, 0, this.width / 2, this.height);
 		divider.setStrokeWidth(5);
 		divider.setStroke(Color.WHITE);
+
 	}
 
 	public void clearPanel() {
@@ -40,6 +41,7 @@ public class CirclesPanelContainer extends StackPane implements Panel {
 
 	public void addToPanel() {
 		setProperties();
+
 		if (divider != null)
 			getChildren().add(divider);
 		getChildren().add(inner);

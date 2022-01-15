@@ -9,7 +9,6 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.tinylog.Logger;
-
 import application.dao.ConfigureManager;
 import application.dao.DataOutputHandler;
 import application.dao.DataType;
@@ -35,6 +34,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 public class MainWindow extends StackPane {
@@ -117,7 +117,7 @@ public class MainWindow extends StackPane {
 		
 		currentScreen = screenGenerator.createCrossScreen(Color.rgb(220, 220, 220), 40, 8);
 		this.getChildren().add((Pane)currentScreen);
-		
+		stage.initStyle(StageStyle.UNDECORATED);
 		stage.setScene(new Scene(this, width, height, Color.BLACK));
 		stage.setMaximized(true);
 		stage.setResizable(false);

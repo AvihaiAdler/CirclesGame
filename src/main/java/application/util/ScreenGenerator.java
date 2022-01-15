@@ -60,7 +60,6 @@ public class ScreenGenerator {
 		var radius = width / 90; // radius of each circle
 		var left = new CirclesPanel(circlesOnLeft, radius, color, Sides.Left, width / 2, height * 0.9);
 		var right = new CirclesPanel(circlesOnRight, radius, color, Sides.Right, width / 2, height * 0.9);
-
 		// wrapper panel
 		var containerPanel = new CirclesPanelContainer(new HBox(left, right), ScreenType.Circles, width, height);
 		containerPanel.addToPanel();
@@ -80,7 +79,7 @@ public class ScreenGenerator {
 		var imagePanel = new ImagePanel(image.getName(), str, img, image.getType());
 		imagePanel.fitImageToScreen(width, height);
 		imagePanel.styleText();
-
+		
 		return imagePanel;
 	}
 
