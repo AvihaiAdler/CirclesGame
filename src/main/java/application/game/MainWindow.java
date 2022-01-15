@@ -30,6 +30,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 public class MainWindow extends Stage {
@@ -104,14 +105,17 @@ public class MainWindow extends Stage {
 		timer.play();
 	}
 	
-	public void init() {
-		Logger.info("Constructing main screen");
+	/*
+	 * Initiate a window and starts the app. This method has to be called externally
+	 */
+	public void start() {
+		Logger.info("Constructing main window");
 		gamesCounter = 0;
 		userAnswer = false;
 		
 		currentScreen = screenGenerator.createCrossScreen(40, 8);
 
-//		this.initStyle(StageStyle.UNDECORATED);
+		this.initStyle(StageStyle.UNDECORATED);
 		this.setTitle("Circles Game");
 		this.setMaximized(true);
 		this.setResizable(false);

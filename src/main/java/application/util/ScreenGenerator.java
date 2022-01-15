@@ -63,8 +63,8 @@ public class ScreenGenerator {
 
 		// init 2 sub Panels, left and right		
 		var radius = width / 150; // radius of each circle
-		var left = new CirclesPanel(circlesOnLeft, radius, Color.rgb(220, 220, 220), Sides.Left, width/4, height * 0.9);
-		var right = new CirclesPanel(circlesOnRight, radius, Color.rgb(220, 220, 220), Sides.Right, width/4, height * 0.9);
+		var left = new CirclesPanel(circlesOnLeft, radius, Color.rgb(220, 220, 220), Sides.Left, width/4, height * 0.8);
+		var right = new CirclesPanel(circlesOnRight, radius, Color.rgb(220, 220, 220), Sides.Right, width/4, height * 0.8);
 		
 		// wrapper panel
 		var separator = new Separator(Orientation.VERTICAL);

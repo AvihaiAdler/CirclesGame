@@ -13,7 +13,7 @@ public class CirclesGame extends Application {
 		primaryStage.close();
 		Logger.info("Starting CirclesGame");
 		app = new MainWindow("config.json", "./CirclesGame.csv");
-		app.init();
+		app.start();
 	}
 	
 	@Override
