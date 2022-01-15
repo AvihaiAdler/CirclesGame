@@ -209,6 +209,7 @@ public class MainWindow extends Stage {
 	}
 	
 	public void terminate() {
+		saveResults("", true);
 		Logger.info("Terminating program");
 		Platform.exit();
 	}
@@ -255,10 +256,7 @@ public class MainWindow extends Stage {
 		String name = names[rand.nextInt(names.length)];
 		return new ImageWrapper(name, FeedbackType.valueOf((String) images.get(name)));
 	}
-	
-	/*
-	 * Writes criteria columns into the corresponding .csv file
-	 */
+
 	public String getColumnsNames() {	
 		return Stream.of(configValues.get("columns"))
 				.map(String::valueOf)

@@ -37,7 +37,7 @@ public class DataOutputHandler {
 						Logger.info("Creating new directory [" + file.getName() + "]");
 						return file.mkdirs();
 					}
-					return false;
+					return true;
 				});
 	}
 
