@@ -176,32 +176,33 @@ public class MainWindow extends Stage {
 	
 	private String getData() {
 		Logger.info("Getting data for [" + currentScreen.getType() + "] screen");
-		return switch (currentScreen.getType()) {
-		case Cross -> {
-			var session = "-";
-			if (gamesCounter == 0)
-				session = "start";
-			else if (gamesCounter == totalGames - 1)
-				session = "end";
-			yield session + "," + LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) + ",";
-		}
-		case Circles -> {
-			yield "";
-		}
-		case Blank -> {
-			var containter = (Pane) lastCirclesScreen.getRoot();
-			var circlesOnTheLeft = ((CirclesPanel) containter.getChildren().get(0)).getSpheresCount();
-			var circlesOnTheRight = ((CirclesPanel) containter.getChildren().get(2)).getSpheresCount();
-			yield (gamesCounter + 1) + ","
-					+ (interactedMilliTime == 0 ? "no response" : (interactedMilliTime - displayedMilliTime)) + ","
-					+ difficultyLvl + "," + circlesOnTheLeft + "," + circlesOnTheRight + "," + userAnswer + ",";
-		}
-		case Image -> {
-			var imgPanel = (ImagePanel)currentScreen.getRoot();
-			var imageName = imgPanel.getImageName().split("/")[1].split(".png")[0];
-			yield imgPanel.getFeedbackType() + "," + imageName;
-		}
-		};
+		return 
+			switch (currentScreen.getType()) {
+				case Cross -> {
+					var session = "-";
+					if (gamesCounter == 0)
+						session = "start";
+					else if (gamesCounter == totalGames - 1)
+						session = "end";
+					yield session + "," + LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) + ",";
+				}
+				case Circles -> {
+					yield "";
+				}
+				case Blank -> {
+					var containter = (Pane) lastCirclesScreen.getRoot();
+					var circlesOnTheLeft = ((CirclesPanel) containter.getChildren().get(0)).getSpheresCount();
+					var circlesOnTheRight = ((CirclesPanel) containter.getChildren().get(2)).getSpheresCount();
+					yield (gamesCounter + 1) + ","
+							+ (interactedMilliTime == 0 ? "no response" : (interactedMilliTime - displayedMilliTime)) + ","
+							+ difficultyLvl + "," + circlesOnTheLeft + "," + circlesOnTheRight + "," + userAnswer + ",";
+				}
+				case Image -> {
+					var imgPanel = (ImagePanel) currentScreen.getRoot();
+					var imageName = imgPanel.getImageName().split("/")[1].split(".png")[0];
+					yield imgPanel.getFeedbackType() + "," + imageName;
+				}
+			};
 	}
 	
 	public void terminate() {

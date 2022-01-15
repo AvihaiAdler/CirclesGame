@@ -34,7 +34,7 @@ public class StimulusSender {
 			Logger.info("Opening a data stream for port " + clientSocket.getPort());
 			outputStream = new DataOutputStream(clientSocket.getOutputStream());	
 		} catch (IOException e) {
-			throw new IOException("Something went wrong when trying to connect to port " + this.port + "\n" + e);
+			throw new IOException("Something went wrong while trying to connect to port " + this.port + "\n" + e);
 		}
 	}
 
