@@ -59,8 +59,9 @@ public class MainWindow extends Stage {
 			configValues = (new ConfigureManager(configFileName)).getProperties();					
 			totalGames = (int)configValues.get("number_of_games");
 			difficultyLvl = (int) configValues.get("starting_difficulty_level");
+			dataHandler.writeLine(getColumnsNames(), DataType.Title);
 			stimSender = new StimulusSender((String)configValues.get("host"), (int)configValues.get("port"));	
-			stimSender.open();			
+			stimSender.open();	
 		} catch (FileNotFoundException fof) {
 			Logger.error(fof);
 			throw fof;
@@ -77,6 +78,9 @@ public class MainWindow extends Stage {
 	}
 	
 	private void keyEventHandler(KeyEvent e) {
+		if(e.isControlDown() && e.getCode() == KeyCode.C)
+			terminate();
+		
 		if (lastCirclesScreen != null && currentScreen.getType() == ScreenType.Blank) {
 			if (e.getCode() == KeyCode.LEFT || e.getCode() == KeyCode.RIGHT) {
 				// get the time passed between screen displayed and user interaction
@@ -121,7 +125,6 @@ public class MainWindow extends Stage {
 		this.setResizable(false);
 		this.centerOnScreen();
 		this.setScene(currentScreen);
-		writeCriteria();
 		
 		createTimer(3.5 * 1000);
 		this.show();
@@ -256,17 +259,10 @@ public class MainWindow extends Stage {
 	/*
 	 * Writes criteria columns into the corresponding .csv file
 	 */
-	public void writeCriteria() {	
-		var title = Stream.of(configValues.get("columns"))
+	public String getColumnsNames() {	
+		return Stream.of(configValues.get("columns"))
 				.map(String::valueOf)
 				.map(str -> str.replaceAll("[\\[\\]]", ""))
 				.collect(Collectors.joining(","));
-		
-
-		try {
-			dataHandler.writeLine(title, DataType.Title);
-		} catch (IOException e) {
-			Logger.error(e);
-		}
 	}
 }
