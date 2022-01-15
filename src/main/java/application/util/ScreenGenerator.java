@@ -9,8 +9,6 @@ import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.Separator;
 import javafx.scene.image.Image;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
@@ -75,7 +73,6 @@ public class ScreenGenerator {
 		HBox.setHgrow(left, Priority.ALWAYS);
 		HBox.setHgrow(right, Priority.ALWAYS);
 		var box = new HBox(left, separator, right);
-		box.setBackground(new Background(new BackgroundFill(this.backgroundColor, null, null)));
 		box.setAlignment(Pos.CENTER);
 		box.setSpacing(50);
 		
@@ -94,7 +91,6 @@ public class ScreenGenerator {
 		var imagePanel = new ImagePanel(image.getName(), str, img, image.getType());
 		imagePanel.fitImageToScreen(width, height);
 		imagePanel.styleText();
-		imagePanel.setBackground(new Background(new BackgroundFill(this.backgroundColor, null, null)));
 		
 		return new Screen(imagePanel, ScreenType.Image, width, height, backgroundColor);
 	}
@@ -104,13 +100,10 @@ public class ScreenGenerator {
 	 */
 	public Screen createCrossScreen(int proportion, int lineWidth) {
 		var screen = new CrossPanel(Color.rgb(220, 220, 220), proportion, lineWidth, height, height);
-		screen.setBackground(new Background(new BackgroundFill(this.backgroundColor, null, null)));
 		return new Screen(screen, ScreenType.Cross, width, height, backgroundColor);
 	}
 
 	public Screen createBlankPanel() {
-		var blank = new StackPane();
-		blank.setBackground(new Background(new BackgroundFill(this.backgroundColor, null, null)));
-		return new Screen(blank, ScreenType.Blank, width, height, backgroundColor);
+		return new Screen(new StackPane(), ScreenType.Blank, width, height, backgroundColor);
 	}
 }
