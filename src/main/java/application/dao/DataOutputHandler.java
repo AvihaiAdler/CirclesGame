@@ -19,27 +19,27 @@ public class DataOutputHandler {
 	public DataOutputHandler(String fileName) {
 		this.fileName = fileName;
 		this.hasTitle = hasTitle();
-		createDir();
 		
 		try {
+			if(!createDir())
+				throw new RuntimeException("Couldn't create a directories " + fileName.substring(0, fileName.lastIndexOf('/')));
 			this.writer = new BufferedWriter(new FileWriter(fileName, hasTitle));
 		} catch (IOException e) {
 			throw new RuntimeException("Something went wrong with" + fileName + ". Close all open windows and try again\n" + e);
 		}
 	}
 	
-	private void createDir() {
-		var path = Stream.of(fileName)
+	private boolean createDir() throws IOException {
+		return Stream.of(fileName)
 				.map(str -> str.substring(0, str.lastIndexOf('/')))
-				.collect(Collectors.joining());
-		
-		var file = new File(path);
-		if(!file.exists()) {
-			Logger.info("Creating new directory " + path);
-			var created = file.mkdirs();
-			if(!created)
-				throw new NullPointerException("Couldn't create a directories " + path);
-		}
+				.map(str -> new File(str))
+				.anyMatch(file -> {
+					if(!file.exists()) {
+						Logger.info("Creating new directory [" + file.getName() + "]");
+						return file.mkdirs();
+					}
+					return false;
+				});
 	}
 
 	/*
@@ -55,7 +55,7 @@ public class DataOutputHandler {
 				return true;
 			return false;
 		} catch (IOException e) {
-			Logger.info("File " + fileName + " couldn't be found\nCreating a new file instead");
+			Logger.info("File " + fileName + " doesn't exists. Creating a new file instead");
 			return false;
 		}
 	}
