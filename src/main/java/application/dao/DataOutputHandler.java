@@ -18,22 +18,22 @@ public class DataOutputHandler {
 	public DataOutputHandler(String fileName) {
 		this.fileName = fileName;
 		this.hasTitle = hasTitle();
-		
+
 		try {
-			if(!createDir())
-				throw new RuntimeException("Couldn't create directories " + fileName.substring(0, fileName.lastIndexOf('/')));
+			if (!createDir())
+				throw new RuntimeException(
+						"Couldn't create directories " + fileName.substring(0, fileName.lastIndexOf('/')));
 			this.writer = new BufferedWriter(new FileWriter(fileName, hasTitle));
 		} catch (IOException e) {
-			throw new RuntimeException("Something went wrong with" + fileName + ". Close all open windows and try again\n" + e);
+			throw new RuntimeException(
+					"Something went wrong with" + fileName + ". Close all open windows and try again\n" + e);
 		}
 	}
-	
+
 	private boolean createDir() throws IOException {
-		return Stream.of(fileName)
-				.map(str -> str.substring(0, str.lastIndexOf('/')))
-				.map(str -> new File(str))
+		return Stream.of(fileName).map(str -> str.substring(0, str.lastIndexOf('/'))).map(str -> new File(str))
 				.anyMatch(file -> {
-					if(!file.exists()) {
+					if (!file.exists()) {
 						Logger.info("Creating new directory [" + file.getName() + "]");
 						return file.mkdirs();
 					}
@@ -60,21 +60,20 @@ public class DataOutputHandler {
 	}
 
 	/*
-	 * writes a string 'as is' into a file an end line character will be added to the end of the string. 
-	 * the string must be formatted properly
+	 * writes a string 'as is' into a file an end line character will be added to
+	 * the end of the string. the string must be formatted properly
 	 */
 	public void writeLine(String data, DataType type) throws IOException {
 		writeData(data, type, true);
 	}
-	
+
 	/*
-	 * writes a string 'as is' into a file. 
-	 * the string must be formatted properly
+	 * writes a string 'as is' into a file. the string must be formatted properly
 	 */
 	public void write(String data, DataType type) throws IOException {
 		writeData(data, type, false);
 	}
-	
+
 	private void writeData(String data, DataType type, boolean endLine) throws IOException {
 		switch (type) {
 		case Title:
@@ -83,8 +82,8 @@ public class DataOutputHandler {
 		case Data:
 			Logger.info("Writing data: [" + data + "] to " + fileName);
 			writer.write(data);
-			
-			if(endLine)
+
+			if (endLine)
 				writer.newLine();
 			break;
 		}
