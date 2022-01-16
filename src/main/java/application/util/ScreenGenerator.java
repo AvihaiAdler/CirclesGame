@@ -83,12 +83,12 @@ public class ScreenGenerator {
 	 * Returns an ImagePane consists of an image and a text below it.
 	 */
 	public Screen createImagesScreen(ImageWrapper image, String str) {
-		var imageStream = this.getClass().getClassLoader().getResourceAsStream(image.getName());
+		var imageStream = this.getClass().getClassLoader().getResourceAsStream(image.name());
 		
 		if(imageStream == null)
-			throw new NullPointerException("Image " + image.getName() + " couldn't be found");
+			throw new NullPointerException("Image " + image.name() + " couldn't be found");
 		var img = new Image(imageStream);
-		var imagePanel = new ImagePanel(image.getName(), str, img, image.getType());
+		var imagePanel = new ImagePanel(image.name(), str, img, image.type());
 		imagePanel.fitImageToScreen(width, height);
 		imagePanel.styleText();
 		

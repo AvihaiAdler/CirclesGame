@@ -21,3 +21,4 @@ public class Screen extends Scene {
 		return type;
 	}
 }
+
