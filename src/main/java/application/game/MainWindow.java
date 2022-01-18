@@ -7,7 +7,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.tinylog.Logger;
-import application.dao.ConfigValues;
+
 import application.dao.ConfigureManager;
 import application.dao.DataOutputHandler;
 import application.dao.DataType;
@@ -16,6 +16,7 @@ import application.dao.StimulusSender;
 import application.gui.CirclesPanel;
 import application.gui.Screen;
 import application.gui.ImagePanel;
+import application.util.ConfigValues;
 import application.util.ImageWrapper;
 import application.util.ScreenGenerator;
 import application.util.ScreenType;

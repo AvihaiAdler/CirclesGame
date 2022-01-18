@@ -2,6 +2,8 @@ package application.dao;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import application.util.ConfigValues;
+
 public class ConfigureManager {
 	private final ObjectMapper jackson;
 	private final String fileName;
