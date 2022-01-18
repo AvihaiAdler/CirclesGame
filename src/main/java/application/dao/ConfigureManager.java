@@ -1,9 +1,5 @@
 package application.dao;
 
-import java.io.FileNotFoundException;
-import java.util.Map;
-
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ConfigureManager {
@@ -15,12 +11,12 @@ public class ConfigureManager {
 		this.fileName = fileName;
 	}
 
-	public Map<String, Object> getProperties() throws FileNotFoundException {
+	public ConfigValues getProperties() throws Exception {
 		var json = this.getClass().getClassLoader().getResourceAsStream(fileName);
 		try {
-			return jackson.readValue(json, new TypeReference<Map<String, Object>>() {});
+			return jackson.readValue(json, ConfigValues.class);
 		} catch (Exception e) {
-			throw new FileNotFoundException("The file " + fileName + " couldn't be found");
+			throw e;
 		}
 	}
 }

@@ -1,6 +1,6 @@
 {
-	"number_of_games": 3,
-	"starting_difficulty_level": 5,
+	"numOfGames": 3,
+	"difficultyLvl": 5,
 	"host": "localhost",
 	"port": 15361,
 	"columns": 

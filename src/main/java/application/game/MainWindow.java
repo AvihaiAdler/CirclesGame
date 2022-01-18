@@ -1,14 +1,13 @@
 package application.game;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.tinylog.Logger;
+import application.dao.ConfigValues;
 import application.dao.ConfigureManager;
 import application.dao.DataOutputHandler;
 import application.dao.DataType;
@@ -34,7 +33,6 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 public class MainWindow extends Stage {
-  private int totalGames;
   private final double width;
   private final double height;
   private int difficultyLvl;
@@ -45,28 +43,27 @@ public class MainWindow extends Stage {
   private Screen currentScreen;
   private Screen lastCirclesScreen;
   private boolean userAnswer;
-  private Map<String, Object> configValues;
+  private ConfigValues configValues;
   private StimulusSender stimSender;
   private final DataOutputHandler dataHandler;
   private final ScreenGenerator screenGenerator;
 
-  public MainWindow(String configFileName, String dataFileName) throws FileNotFoundException {
+  public MainWindow(String configFileName, String dataFileName) throws Exception {
     super();
     this.dataHandler = new DataOutputHandler(dataFileName);
 
+    // reading configuration values
     try {
-      // reading configuration values
       configValues = (new ConfigureManager(configFileName)).getProperties();
-      totalGames = (int) configValues.get("number_of_games");
-      difficultyLvl = (int) configValues.get("starting_difficulty_level");
+      difficultyLvl = configValues.getDifficultyLvl();
       dataHandler.writeLine(getColumnsNames(), DataType.Title);
-      stimSender = new StimulusSender((String) configValues.get("host"), (int) configValues.get("port"));
+      stimSender = new StimulusSender(configValues.getHost(), configValues.getPort());
       stimSender.open();
-    } catch (FileNotFoundException fof) {
-      Logger.error(fof);
-      throw fof;
     } catch (IOException io) {
       Logger.error(io);
+    } catch (Exception e) {
+      Logger.error(e);
+      throw e;
     }
 
     var screenDim = javafx.stage.Screen.getPrimary().getBounds();
@@ -168,7 +165,7 @@ public class MainWindow extends Stage {
         break;
     }
 
-    if (gamesCounter < totalGames) {
+    if (gamesCounter < configValues.getNumOfGames()) {
       Logger.info("Switching to " + currentScreen.getType() + " screen");
       this.setScene(currentScreen);
       this.show();
@@ -203,7 +200,7 @@ public class MainWindow extends Stage {
         var session = "-";
         if (gamesCounter == 0)
           session = "start";
-        else if (gamesCounter == totalGames - 1)
+        else if (gamesCounter == configValues.getNumOfGames() - 1)
           session = "end";
         yield session + "," + LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) + ",";
       }
@@ -243,8 +240,7 @@ public class MainWindow extends Stage {
   public ImageWrapper retrieveImageAttr() {
     var rand = new Random();
 
-    @SuppressWarnings("unchecked") // casting Object into Map<String, Object>
-    Map<String, Object> images = ((Map<String, Object>) configValues.get("images"));
+    var images = configValues.getImages();
 
     // get all image names
     String[] names = images.keySet().stream().toArray(String[]::new);
@@ -255,9 +251,8 @@ public class MainWindow extends Stage {
   }
 
   public String getColumnsNames() {
-    return Stream.of(configValues.get("columns"))
+    return Stream.of(configValues.getColumns())
             .map(String::valueOf)
-            .map(str -> str.replaceAll("[\\[\\]]", ""))
             .collect(Collectors.joining(","));
   }
 }
