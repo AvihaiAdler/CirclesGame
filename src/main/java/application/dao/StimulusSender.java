@@ -52,8 +52,8 @@ public class StimulusSender {
 	}
 
 	// Send stimulation with a timestamp.
-	public void send(long stimulation, long timestamp) throws Exception {
-		var b = ByteBuffer.allocate(64);
+	public void send(long stimulation, long timestamp) throws IOException {
+		var b = ByteBuffer.allocate(Long.BYTES * 2);
 		b.order(ByteOrder.LITTLE_ENDIAN); // Assumes AS runs on LE architecture
 		b.putLong(stimulation); // Stimulation id
 		b.putLong(timestamp); // Timestamp: 0 = immediate

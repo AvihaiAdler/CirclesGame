@@ -1,13 +1,13 @@
 package application.game;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.tinylog.Logger;
-
 import application.dao.ConfigureManager;
 import application.dao.DataOutputHandler;
 import application.dao.DataType;
@@ -124,6 +124,7 @@ public class MainWindow extends Stage {
     this.centerOnScreen();
     this.setScene(currentScreen);
 
+    signal(111, Instant.now().toEpochMilli());
     createTimer(3.5 * 1000);
     this.show();
   }
@@ -154,11 +155,12 @@ public class MainWindow extends Stage {
 
         currentScreen = screenGenerator.createImagesScreen(retrieveImageAttr(), userAnswer ? "You won!" : "You lost!");
         userAnswer = false;
+        signal(333, Instant.now().toEpochMilli());
         createTimer(1.5 * 1000);
         break;
       case Image:
         saveResults(getData(), true);
-
+        
         currentScreen = screenGenerator.createCrossScreen(40, 8);
         gamesCounter++;
 
@@ -233,6 +235,19 @@ public class MainWindow extends Stage {
         dataHandler.writeLine(data, DataType.Data);
       else
         dataHandler.write(data, DataType.Data);
+    } catch (IOException e) {
+      Logger.error(e);
+    }
+  }
+  
+  /*
+   * send a signal to a server. 
+   * 111 - app start
+   * 333 - test signal
+   */
+  public void signal(long signal, long timeStamp) {
+    try {
+      stimSender.send(signal, timeStamp);
     } catch (IOException e) {
       Logger.error(e);
     }
