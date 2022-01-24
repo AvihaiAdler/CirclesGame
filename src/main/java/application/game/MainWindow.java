@@ -192,6 +192,7 @@ public class MainWindow extends Stage {
   
   public void terminate() {
     saveResults("", true);
+    signal(222, Instant.now().toEpochMilli());
     Logger.info("Terminating program");
     Platform.exit();
   }
@@ -243,6 +244,7 @@ public class MainWindow extends Stage {
   /*
    * send a signal to a server. 
    * 111 - app start
+   * 222 - app shutdown
    * 333 - test signal
    */
   public void signal(long signal, long timeStamp) {
