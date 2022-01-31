@@ -58,9 +58,12 @@ public class StimulusSender {
 		b.putLong(stimulation); // Stimulation id
 		b.putLong(timestamp); // Timestamp: 0 = immediate
 		
-		Logger.info("Writing to socket on port " + clientSocket.getPort());
-		Stream.of(b).forEach(Logger::info);
+		if(clientSocket != null)
+		  Logger.info("Writing to socket on port " + clientSocket.getPort());
+
+		Stream.of(b).forEach(Logger::info);		
 		
-		outputStream.write(b.array());
+		if(outputStream != null)
+		  outputStream.write(b.array());
 	}
 }
