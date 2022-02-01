@@ -1,7 +1,6 @@
 package application.game;
 
 import java.io.IOException;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
@@ -124,7 +123,7 @@ public class MainWindow extends Stage {
     this.centerOnScreen();
     this.setScene(currentScreen);
 
-    signal(111, Instant.now().toEpochMilli());
+    signal(100L, 0L);
     createTimer(3.5 * 1000);
     this.show();
   }
@@ -142,6 +141,7 @@ public class MainWindow extends Stage {
         currentScreen = screenGenerator.createBlankPanel();
         interactedMilliTime = 0;
         displayedMilliTime = System.currentTimeMillis();
+        signal(5000L, 0L);
         createTimer(1.4 * 1000);
         break;
       case Blank:
@@ -155,7 +155,7 @@ public class MainWindow extends Stage {
 
         currentScreen = screenGenerator.createImagesScreen(retrieveImageAttr(), userAnswer ? "You won!" : "You lost!");
         userAnswer = false;
-        signal(333, Instant.now().toEpochMilli());
+        signal(7000L, 0L);
         createTimer(1.5 * 1000);
         break;
       case Image:
@@ -192,7 +192,7 @@ public class MainWindow extends Stage {
   
   public void terminate() {
     saveResults("", true);
-    signal(222, Instant.now().toEpochMilli());
+    signal(200L, 0L);
     Logger.info("Terminating program");
     Platform.exit();
   }
@@ -243,9 +243,10 @@ public class MainWindow extends Stage {
   
   /*
    * send a signal to a server. 
-   * 111 - app start
-   * 222 - app shutdown
-   * 333 - test signal
+   * 100 - app start
+   * 200 - app shutdown
+   * 5000 - stim for when the user chooses a screen
+   * 7000 - stim for when the user gets the picture
    */
   public void signal(long signal, long timeStamp) {
     try {

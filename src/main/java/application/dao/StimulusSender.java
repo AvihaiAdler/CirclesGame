@@ -16,8 +16,6 @@ import org.tinylog.Logger;
 public class StimulusSender {
 	private String host;
 	private int port;
-	
-	// define m_clientSocket and m_outputStream
 	private Socket clientSocket;
 	private DataOutputStream outputStream;
 
@@ -53,10 +51,11 @@ public class StimulusSender {
 
 	// Send stimulation with a timestamp.
 	public void send(long stimulation, long timestamp) throws IOException {
-		var b = ByteBuffer.allocate(Long.BYTES * 2);
+		var b = ByteBuffer.allocate(24);
 		b.order(ByteOrder.LITTLE_ENDIAN); // Assumes AS runs on LE architecture
-		b.putLong(stimulation); // Stimulation id
-		b.putLong(timestamp); // Timestamp: 0 = immediate
+		b.putLong(0);
+		b.putLong(stimulation); 
+		b.putLong(timestamp); 
 		
 		if(clientSocket != null)
 		  Logger.info("Writing to socket on port " + clientSocket.getPort());
