@@ -1,15 +1,4 @@
-Compilation instructions:
-
-1. Make sure you have Maven installed on your computer:
-	- download from here: https://maven.apache.org/download.cgi.
-	- make sure to set up an Environment variable (windows users).
-	- a short guide in here: https://maven.apache.org/guides/getting-started/windows-prerequisites.html
-2. Import as a Maven project
-3. Left click on the project -> Maven -> update project
-4. To build, navigate the the project root directory via the terminal and use this command:  
-	`mvn clean compile assembly:single`
-5. A CirclesGame.jar file will appear in target/
-
+Documentation can be found under documentation/
 
 - The mini app consists of 4 screens. The goal is to correctly identify the side of the screen which has more circles in it. Input is the left and right arrows (respectively). The input is being read when a black screen is showing
 
