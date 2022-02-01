@@ -74,10 +74,13 @@ public class MainWindow extends Stage {
     this.addEventFilter(KeyEvent.KEY_PRESSED, this::keyEventHandler);
   }
 
-  private void keyEventHandler(KeyEvent e) {
+  private void keyEventHandler(KeyEvent e) {    
     if (e.isControlDown() && e.getCode() == KeyCode.C)
-      terminate();
+      terminate(true);
 
+    if(currentScreen.getType() == ScreenType.Welcome)
+      showNext();
+    
     if (lastCirclesScreen != null && currentScreen.getType() == ScreenType.Blank) {
       if (e.getCode() == KeyCode.LEFT || e.getCode() == KeyCode.RIGHT) {
         // get the time passed between screen displayed and user interaction
@@ -114,7 +117,7 @@ public class MainWindow extends Stage {
     gamesCounter = 0;
     userAnswer = false;
 
-    currentScreen = screenGenerator.createCrossScreen(40, 8);
+    currentScreen = screenGenerator.createWelcomeScreen();
 
     this.initStyle(StageStyle.UNDECORATED);
     this.setTitle("Circles Game");
@@ -124,12 +127,15 @@ public class MainWindow extends Stage {
     this.setScene(currentScreen);
 
     signal(100L, 0L);
-    createTimer(3.5 * 1000);
     this.show();
   }
 
   private void showNext() {
     switch (currentScreen.getType()) {
+      case Welcome:
+        currentScreen = screenGenerator.createCrossScreen(40, 8);
+        createTimer(3.5 * 1000);
+        break;
       case Cross:
         saveResults(getData(), false);
 
@@ -173,7 +179,7 @@ public class MainWindow extends Stage {
       this.setScene(currentScreen);
       this.show();
     } else {
-      terminate();
+      terminate(false);
     }
   }
   
@@ -190,8 +196,10 @@ public class MainWindow extends Stage {
     }
   }
   
-  public void terminate() {
-    saveResults("", true);
+  public void terminate(boolean forced) {
+    if(forced)
+      saveResults("", true);
+    
     signal(200L, 0L);
     Logger.info("Terminating program");
     Platform.exit();
@@ -208,9 +216,6 @@ public class MainWindow extends Stage {
           session = "end";
         yield session + "," + LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) + ",";
       }
-      case Circles -> {
-        yield "";
-      }
       case Blank -> {
         var containter = (Pane) lastCirclesScreen.getRoot();
         var circlesOnTheLeft = ((CirclesPanel) containter.getChildren().get(0)).getSpheresCount();
@@ -223,6 +228,9 @@ public class MainWindow extends Stage {
         var imgPanel = (ImagePanel) currentScreen.getRoot();
         var imageName = imgPanel.getImageName().split("/")[1].split(".png")[0];
         yield imgPanel.getFeedbackType() + "," + imageName;
+      }
+      default -> {
+        yield "";
       }
     };
   }

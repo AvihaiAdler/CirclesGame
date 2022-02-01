@@ -18,7 +18,7 @@ public class CirclesGame extends Application {
 	
 	@Override
 	public void stop() {
-//		app.close();
+		app.close();
 	}
 	
 	public static void main(String[] args) {
