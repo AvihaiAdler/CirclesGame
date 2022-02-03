@@ -1,6 +1,6 @@
 package application.util;
 
-import application.dao.FeedbackType;
+import application.dal.FeedbackType;
 
 public record ImageWrapper(String name, FeedbackType type) {
 

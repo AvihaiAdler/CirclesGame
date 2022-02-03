@@ -1,4 +1,4 @@
-package application.dao;
+package application.dal;
 
 public enum FeedbackType {
 	positive, negative

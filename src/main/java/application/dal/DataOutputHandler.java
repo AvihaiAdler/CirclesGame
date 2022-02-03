@@ -1,4 +1,4 @@
-package application.dao;
+package application.dal;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

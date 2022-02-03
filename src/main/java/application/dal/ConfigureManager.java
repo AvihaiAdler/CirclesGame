@@ -1,4 +1,4 @@
-package application.dao;
+package application.dal;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
