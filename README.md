@@ -32,7 +32,7 @@ Where:
 - `Visual feedback`: positive/negative, the type of feedback the user got
 - `Image name`: the name of the image presented to the user
 
-In addition to the data, the app sends signal via a TCP socket at certain points. The signals are pretty much arbitrary numbers and suppose to interface with an [OpenVibe server](http://openvibe.inria.fr/).
+In addition to the data, the app sends signals via a TCP socket at certain points. The signals are pretty much arbitrary numbers and suppose to interface with an [OpenVibe server](http://openvibe.inria.fr/).
 The signals are sent upon:
 
 - app start
