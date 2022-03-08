@@ -22,15 +22,15 @@ The app saves some data from each game into a `.csv` file under `data/`. The dat
 
 Where:
 
-`Session`: Represent the start/end of a session. Session in X number of games runs in a single app run
-`TimeStamp`: Represent the start of a game (in ISO-8601 format)
-`Game#` : Represent the number of the game
-`Response`: the time in millis since the user get the 3rd screen until they press a button (made a choice)
-`Difficulty`: Represent the difference between the number of circles on each side. the 'higher' the number - the easier it gets
-`Circles_count_left`/`Circles_count_right`: self explanatory
-`User Answer`: True/False, whether the user was right with their choice or not
-`Visual feedback`: positive/negative, the type of feedback the user got
-`Image name`: the name of the image presented to the user
+- `Session`: Represent the start/end of a session. Session in X number of games runs in a single app run
+- `TimeStamp`: Represent the start of a game (in ISO-8601 format)
+- `Game#` : Represent the number of the game
+- `Response`: the time in millis since the user get the 3rd screen until they press a button (made a choice)
+- `Difficulty`: Represent the difference between the number of circles on each side. the 'higher' the number - the easier it gets
+- `Circles_count_left`/`Circles_count_right`: self explanatory
+- `User Answer`: True/False, whether the user was right with their choice or not
+- `Visual feedback`: positive/negative, the type of feedback the user got
+- `Image name`: the name of the image presented to the user
 
 In addition to the data, the app sends signal via a TCP socket at certain points. The signals are pretty much arbitrary numbers and suppose to interface with an [OpenVibe server](http://openvibe.inria.fr/).
 The signals are sent upon:
