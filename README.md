@@ -1,6 +1,6 @@
 ## Circles Game Application
 
-This app, along with this [app](https://github.com/AvihaiAdler/LettersGame) developed as a tool for a research based on [the following](https://www.researchgate.net/publication/23151714_Vrticka_P_Andersson_F_Grandjean_D_Sander_D_Vuilleumier_P_Individual_attachment_style_modulates_human_amygdala_and_striatum_activation_during_social_appraisal_PLoS_ONE_3_e2868). Specifically `Circles Game Application` is an implementation of the tool described in that article above.
+This app, along with this [app](https://github.com/AvihaiAdler/LettersGame) developed as a tool for a research based on the following [article](https://www.researchgate.net/publication/23151714_Vrticka_P_Andersson_F_Grandjean_D_Sander_D_Vuilleumier_P_Individual_attachment_style_modulates_human_amygdala_and_striatum_activation_during_social_appraisal_PLoS_ONE_3_e2868). Specifically `Circles Game Application` is an implementation of the tool described in that article above.
 
 ### General description
 
