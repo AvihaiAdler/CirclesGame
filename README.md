@@ -18,7 +18,7 @@ At any point in time, pressing `ctrl + c` will terminate the app.
 Each correct choice will increase the difficulty of the next game. Each wrong choice will lower it as described in the [article](https://www.researchgate.net/publication/23151714_Vrticka_P_Andersson_F_Grandjean_D_Sander_D_Vuilleumier_P_Individual_attachment_style_modulates_human_amygdala_and_striatum_activation_during_social_appraisal_PLoS_ONE_3_e2868).
 
 The app saves some data from each game into a `.csv` file under `data/`. The data is saved in the following format:
-| Session | TimeStamp | Game# | Response | Difficulty | Circles_count_left | Circles_count_right | User Answer | Visual feedback | Image name |
+`| Session | TimeStamp | Game# | Response | Difficulty | Circles_count_left | Circles_count_right | User Answer | Visual feedback | Image name |`
 
 Where:
 `Session`: Represent the start/end of a session. Session in X number of games runs in a single app run
