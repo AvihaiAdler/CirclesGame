@@ -21,6 +21,7 @@ The app saves some data from each game into a `.csv` file under `data/`. The dat
 `| Session | TimeStamp | Game# | Response | Difficulty | Circles_count_left | Circles_count_right | User Answer | Visual feedback | Image name |`
 
 Where:
+
 `Session`: Represent the start/end of a session. Session in X number of games runs in a single app run
 `TimeStamp`: Represent the start of a game (in ISO-8601 format)
 `Game#` : Represent the number of the game
