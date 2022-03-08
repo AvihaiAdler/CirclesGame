@@ -60,7 +60,7 @@ This section is meant for testing purposes as i know nothing about OpenVibe.
 - OpenVibe requires python to work. Make sure you have it installed and configured as a PATH variable
 
 To setup OpenVibe for testing you'll need to setup an `acquisition server` and a `designer`. The server
-receives data from external applications through a TCP connection and send it to the Designer. The Designer
+receives data from external applications through a TCP connection and sends it to the Designer. The Designer
 process the data using various 'boxes'.
 
 ##### Acquisition Server
