@@ -55,7 +55,7 @@ To build the app, download the source code. Make sure you have [maven](https://m
 
 ### Setup
 
-This section is ment for testing purposes as i know nothing about OpenVibe.
+This section is meant for testing purposes as i know nothing about OpenVibe.
 
 - OpenVibe requires python to work. Make sure you have it installed and configured as a PATH variable
 
