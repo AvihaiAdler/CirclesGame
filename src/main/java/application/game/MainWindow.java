@@ -7,7 +7,6 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.tinylog.Logger;
-
 import application.dal.ConfigureManager;
 import application.dal.DataOutputHandler;
 import application.dal.DataType;
@@ -20,6 +19,7 @@ import application.util.ConfigValues;
 import application.util.ImageWrapper;
 import application.util.ScreenGenerator;
 import application.util.ScreenType;
+import application.util.Sides;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -48,6 +48,7 @@ public class MainWindow extends Stage {
   private StimulusSender stimSender;
   private final DataOutputHandler dataHandler;
   private final ScreenGenerator screenGenerator;
+  private boolean switchSide = false;
 
   public MainWindow(String configFileName, String dataFileName) throws Exception {
     super();
@@ -138,9 +139,10 @@ public class MainWindow extends Stage {
         createTimer(3.5 * 1000);
         break;
       case Cross:
+        switchSide = !switchSide;
         saveResults(getData(), false);
-
-        currentScreen = screenGenerator.createCirclesScreen(10, 15, difficultyLvl);
+        
+        currentScreen = screenGenerator.createCirclesScreen(10, 15, difficultyLvl, switchSide ? Sides.Left : Sides.Right);
         createTimer(0.5 * 1000);
         break;
       case Circles:

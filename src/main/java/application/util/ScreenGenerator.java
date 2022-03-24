@@ -1,6 +1,5 @@
 package application.util;
 
-import java.util.Random;
 import application.gui.CirclesPanel;
 import application.gui.Screen;
 import application.gui.WelcomePanel;
@@ -30,37 +29,16 @@ public class ScreenGenerator {
 	 * Returns a circles screen. Circle numbers will be generated in the range of
 	 * [min, max] based on the difficulty level
 	 */
-	public Screen createCirclesScreen(int min, int max, int difficultyLvl) {
-		var rand = new Random();
-
-		/*
-		 * random number for circles. The number for each panel depends on the other
-		 * panel and the difficulty level. Difficulty level starts at 5. The number for
-		 * each panel must be between [min, max], while the difference between both
-		 * panels must be equal to difficulty level. For example for min = 20, max = 30,
-		 * difficultyLvl = 5: if left panel has 20 circles the right panel must have 25
-		 * circles
-		 */
-		int random;
-		do {
-			random = rand.nextInt(max + 1 - min) + min;
-		} while (random - difficultyLvl < min && random + difficultyLvl > max);
-
-		int inverse;
-		if (random - difficultyLvl >= min)
-			inverse = random - difficultyLvl;
-		else
-			inverse = random + difficultyLvl;
-
-		int circlesOnLeft, circlesOnRight;
-		var tmp = rand.nextInt(2);
-		if (tmp > 0) {
-			circlesOnLeft = random;
-			circlesOnRight = inverse;
-		} else {
-			circlesOnLeft = inverse;
-			circlesOnRight = random;
-		}
+	public Screen createCirclesScreen(int min, int max, int difficultyLvl, Sides side) {
+		var circlesOnLeft = switch(side) {
+		  case Left -> min;
+		  case Right -> min + difficultyLvl;
+		};
+		
+		var circlesOnRight = switch(side) {
+      case Left -> min + difficultyLvl;
+      case Right -> min;
+    };
 
 		// init 2 sub Panels, left and right		
 		var radius = width / 150; // radius of each circle

@@ -12,7 +12,7 @@ public class CirclesGame extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		primaryStage.close();
 		Logger.info("Starting circles game");
-		app = new MainWindow("config.json", "./data/circles_game.csv");
+		app = new MainWindow("config.json", "./data/circles_game_practive.csv");
 		app.start();
 	}
 	
