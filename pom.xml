@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>Circles_Game_Application</groupId>
 	<artifactId>Circles_Game_Application</artifactId>
-	<version>0.0.5</version>
+	<version>0.0.6</version>
 
 
 	<!-- Java SE version -->
@@ -100,7 +100,7 @@
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>3.3.0</version>
 				<configuration>
-					<finalName>CircleGame</finalName>
+					<finalName>circles_game</finalName>
 					<archive>
 						<manifest>
 							<mainClass>application.Launcher</mainClass>
