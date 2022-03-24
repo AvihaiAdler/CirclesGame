@@ -160,7 +160,7 @@ public class MainWindow extends Stage {
         else if (!userAnswer && difficultyLvl < 5)
           difficultyLvl++;
 
-        currentScreen = screenGenerator.createImagesScreen(retrieveImageAttr(), userAnswer ? "You won!" : "You lost!");
+        currentScreen = screenGenerator.createImagesScreen(retrieveImageAttr(), userAnswer ? "ניצחת!" : "טעית!");
         userAnswer = false;
         signal(7000L, 0L);
         createTimer(1.5 * 1000);
