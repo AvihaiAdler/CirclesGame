@@ -6,14 +6,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
 public class CrossPanel extends StackPane {
-	private double width;
-	private double height;
-	private int lineWidth;
+	private final double width;
+	private final double height;
+	private final int lineWidth;
 	private Line horizontal;
 	private Line vertical;
 
 	// represents a factor to determine how much the line will 'extends' to the sides
-	private int proportion;
+	private final int proportion;
 
 	private final Color color;
 

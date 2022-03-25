@@ -7,8 +7,8 @@ public enum ScreenType {
 	Image("image"),
 	Blank("blank");
 	
-	public String type;
-	private ScreenType(String type) {
+	public final String type;
+	ScreenType(String type) {
 		this.type = type;
 	}
 	
