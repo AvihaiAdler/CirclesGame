@@ -11,18 +11,19 @@ The app consists of 4 alternating screens (excluding the welcome screen):
 - a black screen. The user make their 'choice' here with their keyboard keys. Left arrow for the left screen, right for the right
 - a feedback screen, at which the user gets a random picture and a text based on their earlier choice i.e. if the user chose the correct side they'll get: a random image + `you won` text. If they chose the wrong side they'll get a random image + `you lost` text.
 
-### Functionallity
+### Functionality
 
 As mentioned the user should make their choice during the 3rd screen.
 At any point in time, pressing `ctrl + c` will terminate the app.
 Each correct choice will increase the difficulty of the next game. Each wrong choice will lower it as described in the [article](https://www.researchgate.net/publication/23151714_Vrticka_P_Andersson_F_Grandjean_D_Sander_D_Vuilleumier_P_Individual_attachment_style_modulates_human_amygdala_and_striatum_activation_during_social_appraisal_PLoS_ONE_3_e2868).
 
 The app saves some data from each game into a `.csv` file under `data/`. The data is saved in the following format:
-`| Session | TimeStamp | Game# | Response | Difficulty | Circles_count_left | Circles_count_right | User Answer | Visual feedback | Image name |`
+| Session | TimeStamp | Game# | Response | Difficulty | Circles_count_left | Circles_count_right | User Answer | Visual feedback | Image name |
+|---------|-----------|-------|----------|------------|--------------------|---------------------|-------------|-----------------|------------|
 
 Where:
 
-- `Session`: Represent the start/end of a session. Session in X number of games runs in a single app run
+- `Session`: Represent the start/end of a session. Session is X number of games runs in a single app run
 - `TimeStamp`: Represent the start of a game (in ISO-8601 format)
 - `Game#` : Represent the number of the game
 - `Response`: the time in millis since the user get the 3rd screen until they press a button (made a choice)
