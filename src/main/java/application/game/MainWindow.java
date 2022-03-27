@@ -7,7 +7,6 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.tinylog.Logger;
-
 import application.dal.ConfigureManager;
 import application.dal.DataOutputHandler;
 import application.dal.DataType;
@@ -23,8 +22,6 @@ import application.util.ScreenType;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;

@@ -1,11 +1,9 @@
 package application.gui;
 
 import application.dal.FeedbackType;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -13,7 +11,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
-public class ImagePanel extends BorderPane {
+public class ImagePanel extends AnchorPane {
 	private final String imageName;
 	private final FeedbackType feedbackType;
 	private final ImageView imageScreen;
@@ -24,9 +22,8 @@ public class ImagePanel extends BorderPane {
 		this.feedbackType = feedbackType;
 		this.text = new Text(text);
 		imageScreen = new ImageView(image);
-		
-		this.setCenter(imageScreen);
-		this.setBottom(this.text);
+
+		this.getChildren().addAll(imageScreen, this.text);
 	}
 	
 	public void fitImageToScreen(double width, double height) {
@@ -45,10 +42,15 @@ public class ImagePanel extends BorderPane {
 		text.setFont(Font.font("Roboto", FontWeight.BOLD, FontPosture.REGULAR, 80));
 		text.setFill(Color.rgb(220, 220, 220));
 		text.setTextAlignment(TextAlignment.CENTER);
-
-		// configure the Bottom section to align top (of the Bottom) and center
-		ImagePanel.setAlignment(text, Pos.TOP_CENTER);
-		ImagePanel.setMargin(text, new Insets(30));
+	}
+	
+	public void alignToCenter(double screenWidth, double screenHeight) {
+    AnchorPane.setTopAnchor(imageScreen, screenHeight / 10);
+    AnchorPane.setLeftAnchor(imageScreen, screenWidth / 2 - imageScreen.getFitWidth() / 2);
+    AnchorPane.setRightAnchor(imageScreen, screenWidth / 2 - imageScreen.getFitWidth() / 2);
+    AnchorPane.setTopAnchor(text, screenHeight / 10 + imageScreen.getFitHeight());
+    AnchorPane.setLeftAnchor(text, screenWidth / 2 - imageScreen.getFitWidth() / 5);
+    AnchorPane.setRightAnchor(text, screenWidth / 2 - imageScreen.getFitWidth() / 5);
 	}
 
 	public String getImageName() {
