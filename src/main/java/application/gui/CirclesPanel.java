@@ -15,7 +15,7 @@ public class CirclesPanel extends Pane {
 	private final double width;
 	private final double height;
 	private final double radius;
-	private List<Sphere> lst;
+	private final List<Sphere> lst;
 	private final Color color;
 	private final Sides side;
 
@@ -92,7 +92,6 @@ public class CirclesPanel extends Pane {
 	public CirclesPanel greaterThan(CirclesPanel other) {
 		if (other == null)
 			return this;
-		var greater = this.getSpheresCount() > other.getSpheresCount() ? this : other;
-		return greater;
+		return this.getSpheresCount() > other.getSpheresCount() ? this : other;
 	}
 }

@@ -23,8 +23,6 @@ import application.util.Sides;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
@@ -34,13 +32,10 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 public class MainWindow extends Stage {
-  private final double width;
-  private final double height;
   private int difficultyLvl;
   private int gamesCounter;
   private long displayedMilliTime;
   private long interactedMilliTime;
-  private Timeline timer;
   private Screen currentScreen;
   private Screen lastCirclesScreen;
   private boolean userAnswer;
@@ -48,6 +43,7 @@ public class MainWindow extends Stage {
   private StimulusSender stimSender;
   private final DataOutputHandler dataHandler;
   private final ScreenGenerator screenGenerator;
+  private Timeline timer;
   private boolean switchSide = false;
 
   public MainWindow(String configFileName, String dataFileName) throws Exception {
@@ -69,8 +65,8 @@ public class MainWindow extends Stage {
     }
 
     var screenDim = javafx.stage.Screen.getPrimary().getBounds();
-    width = screenDim.getWidth();
-    height = screenDim.getHeight();
+    var width = screenDim.getWidth();
+    var height = screenDim.getHeight();
     screenGenerator = new ScreenGenerator(width, height, Color.BLACK);
 
     this.addEventFilter(KeyEvent.KEY_PRESSED, this::keyEventHandler);
@@ -87,26 +83,20 @@ public class MainWindow extends Stage {
       if (e.getCode() == KeyCode.LEFT || e.getCode() == KeyCode.RIGHT) {
         // get the time passed between screen displayed and user interaction
         interactedMilliTime = System.currentTimeMillis();
-        var containter = (Pane) lastCirclesScreen.getRoot();
-        var hasMoreCircles = ((CirclesPanel) containter.getChildren().get(0))
-            .greaterThan((CirclesPanel) containter.getChildren().get(2));
-        userAnswer = e.getCode().toString().equalsIgnoreCase(hasMoreCircles.getSide().toString()) ? true : false;
+        var container = (Pane) lastCirclesScreen.getRoot();
+        var hasMoreCircles = ((CirclesPanel) container.getChildren().get(0))
+            .greaterThan((CirclesPanel) container.getChildren().get(2));
+        userAnswer = e.getCode().toString().equalsIgnoreCase(hasMoreCircles.getSide().toString());
         showNext();
       }
     }
   }
 
   private void createTimer(double millis) {
-    Logger.info("Creating a new timer with " + Double.toString(millis) + "ms delay");
+    Logger.info("Creating a new timer with " + millis + "ms delay");
     if (timer != null)
       timer.stop();
-    timer = new Timeline(new KeyFrame(Duration.millis(millis), new EventHandler<ActionEvent>() {
-
-      @Override
-      public void handle(ActionEvent e) {
-        showNext();
-      }
-    }));
+    timer = new Timeline(new KeyFrame(Duration.millis(millis), e -> showNext()));
     timer.setCycleCount(Timeline.INDEFINITE);
     timer.play();
   }
@@ -134,26 +124,25 @@ public class MainWindow extends Stage {
 
   private void showNext() {
     switch (currentScreen.getType()) {
-      case Welcome:
+      case Welcome -> {
         currentScreen = screenGenerator.createCrossScreen(40, 8);
         createTimer(3.5 * 1000);
-        break;
-      case Cross:
+      }
+      case Cross -> {
         switchSide = !switchSide;
-        saveResults(getData(), false);
-        
+        saveResults(getData(), false);     
         currentScreen = screenGenerator.createCirclesScreen(10, 15, difficultyLvl, switchSide ? Sides.Left : Sides.Right);
         createTimer(0.5 * 1000);
-        break;
-      case Circles:
+      }
+      case Circles -> {
         lastCirclesScreen = currentScreen;
         currentScreen = screenGenerator.createBlankPanel();
         interactedMilliTime = 0;
         displayedMilliTime = System.currentTimeMillis();
         signal(5000L, 0L);
         createTimer(1.4 * 1000);
-        break;
-      case Blank:
+      }
+      case Blank -> {
         saveResults(getData(), false);
 
         // change difficulty
@@ -161,20 +150,17 @@ public class MainWindow extends Stage {
           difficultyLvl--;
         else if (!userAnswer && difficultyLvl < 5)
           difficultyLvl++;
-
         currentScreen = screenGenerator.createImagesScreen(retrieveImageAttr(), userAnswer ? "ניצחת!" : "טעית!");
         userAnswer = false;
         signal(7000L, 0L);
         createTimer(1.5 * 1000);
-        break;
-      case Image:
+      }
+      case Image -> {
         saveResults(getData(), true);
-        
         currentScreen = screenGenerator.createCrossScreen(40, 8);
         gamesCounter++;
-
         createTimer(3.5 * 1000);
-        break;
+      }
     }
 
     if (gamesCounter < configValues.getNumOfGames()) {
@@ -220,9 +206,9 @@ public class MainWindow extends Stage {
         yield session + "," + LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) + ",";
       }
       case Blank -> {
-        var containter = (Pane) lastCirclesScreen.getRoot();
-        var circlesOnTheLeft = ((CirclesPanel) containter.getChildren().get(0)).getSpheresCount();
-        var circlesOnTheRight = ((CirclesPanel) containter.getChildren().get(2)).getSpheresCount();
+        var container = (Pane) lastCirclesScreen.getRoot();
+        var circlesOnTheLeft = ((CirclesPanel) container.getChildren().get(0)).getSpheresCount();
+        var circlesOnTheRight = ((CirclesPanel) container.getChildren().get(2)).getSpheresCount();
         yield (gamesCounter + 1) + ","
             + (interactedMilliTime == 0 ? "no response" : (interactedMilliTime - displayedMilliTime)) + ","
             + difficultyLvl + "," + circlesOnTheLeft + "," + circlesOnTheRight + "," + userAnswer + ",";
@@ -232,9 +218,7 @@ public class MainWindow extends Stage {
         var imageName = imgPanel.getImageName().split("/")[1].split(".png")[0];
         yield imgPanel.getFeedbackType() + "," + imageName;
       }
-      default -> {
-        yield "";
-      }
+      default -> "";
     };
   }
 
@@ -273,11 +257,11 @@ public class MainWindow extends Stage {
     var images = configValues.getImages();
 
     // get all image names
-    String[] names = images.keySet().stream().toArray(String[]::new);
+    String[] names = images.keySet().toArray(String[]::new);
 
     // choose a random image
     String name = names[rand.nextInt(names.length)];
-    return new ImageWrapper(name, FeedbackType.valueOf((String) images.get(name)));
+    return new ImageWrapper(name, FeedbackType.valueOf(images.get(name)));
   }
 
   public String getColumnsNames() {

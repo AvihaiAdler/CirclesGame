@@ -14,8 +14,8 @@ import org.tinylog.Logger;
 */
 
 public class StimulusSender {
-	private String host;
-	private int port;
+	private final String host;
+	private final int port;
 	private Socket clientSocket;
 	private DataOutputStream outputStream;
 

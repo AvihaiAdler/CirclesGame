@@ -70,6 +70,7 @@ public class ScreenGenerator {
 		var imagePanel = new ImagePanel(image.name(), str, img, image.type());
 		imagePanel.fitImageToScreen(width, height);
 		imagePanel.styleText();
+		imagePanel.alignToCenter(width, height);
 		
 		return new Screen(imagePanel, ScreenType.Image, width, height, backgroundColor);
 	}

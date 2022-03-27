@@ -31,7 +31,7 @@ public class DataOutputHandler {
 	}
 
 	private boolean createDir() throws IOException {
-		return Stream.of(fileName).map(str -> str.substring(0, str.lastIndexOf('/'))).map(str -> new File(str))
+		return Stream.of(fileName).map(str -> str.substring(0, str.lastIndexOf('/'))).map(File::new)
 				.anyMatch(file -> {
 					if (!file.exists()) {
 						Logger.info("Creating new directory [" + file.getName() + "]");
@@ -50,9 +50,7 @@ public class DataOutputHandler {
 			var reader = new BufferedReader(new FileReader(fileName));
 			var line = reader.readLine();
 			reader.close();
-			if (line != null)
-				return true;
-			return false;
+			return line != null;
 		} catch (IOException e) {
 			Logger.info("File " + fileName + " doesn't exists. Creating a new file instead");
 			return false;

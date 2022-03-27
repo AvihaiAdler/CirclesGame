@@ -1,6 +1,6 @@
 ## Circles Game Application
 
-This app, along with this [app](https://github.com/AvihaiAdler/LettersGame) developed as a tool for a research based on the following [article](https://www.researchgate.net/publication/23151714_Vrticka_P_Andersson_F_Grandjean_D_Sander_D_Vuilleumier_P_Individual_attachment_style_modulates_human_amygdala_and_striatum_activation_during_social_appraisal_PLoS_ONE_3_e2868). Specifically `Circles Game Application` is an implementation of the tool described in that article above.
+This app, along with this [app](https://github.com/AvihaiAdler/LettersGame) developed as a tool for research based on the following [article](https://www.researchgate.net/publication/23151714_Vrticka_P_Andersson_F_Grandjean_D_Sander_D_Vuilleumier_P_Individual_attachment_style_modulates_human_amygdala_and_striatum_activation_during_social_appraisal_PLoS_ONE_3_e2868). Specifically `Circles Game Application` is an implementation of the tool described in that article above.
 
 ### General description
 
@@ -11,23 +11,24 @@ The app consists of 4 alternating screens (excluding the welcome screen):
 - a black screen. The user make their 'choice' here with their keyboard keys. Left arrow for the left screen, right for the right
 - a feedback screen, at which the user gets a random picture and a text based on their earlier choice i.e. if the user chose the correct side they'll get: a random image + `you won` text. If they chose the wrong side they'll get a random image + `you lost` text.
 
-### Functionallity
+### Functionality
 
 As mentioned the user should make their choice during the 3rd screen.
 At any point in time, pressing `ctrl + c` will terminate the app.
 Each correct choice will increase the difficulty of the next game. Each wrong choice will lower it as described in the [article](https://www.researchgate.net/publication/23151714_Vrticka_P_Andersson_F_Grandjean_D_Sander_D_Vuilleumier_P_Individual_attachment_style_modulates_human_amygdala_and_striatum_activation_during_social_appraisal_PLoS_ONE_3_e2868).
 
 The app saves some data from each game into a `.csv` file under `data/`. The data is saved in the following format:
-`| Session | TimeStamp | Game# | Response | Difficulty | Circles_count_left | Circles_count_right | User Answer | Visual feedback | Image name |`
+| Session | TimeStamp | Game# | Response | Difficulty | Circles_count_left | Circles_count_right | User Answer | Visual feedback | Image name |
+|---------|-----------|-------|----------|------------|--------------------|---------------------|-------------|-----------------|------------|
 
 Where:
 
-- `Session`: Represent the start/end of a session. Session in X number of games runs in a single app run
+- `Session`: Represent the start/end of a session. Session is X number of games runs in a single app run
 - `TimeStamp`: Represent the start of a game (in ISO-8601 format)
 - `Game#` : Represent the number of the game
 - `Response`: the time in millis since the user get the 3rd screen until they press a button (made a choice)
 - `Difficulty`: Represent the difference between the number of circles on each side. the 'higher' the number - the easier it gets
-- `Circles_count_left`/`Circles_count_right`: self explanatory
+- `Circles_count_left`/`Circles_count_right`: self-explanatory
 - `User Answer`: True/False, whether the user was right with their choice or not
 - `Visual feedback`: positive/negative, the type of feedback the user got
 - `Image name`: the name of the image presented to the user
@@ -47,7 +48,7 @@ Note that you can change the names of each column in the .csv file, however you 
 
 The images can be changed too. To change them, make sure you place them in `src/main/resources/images`, and change the values in `config.json` under "images" to: `"image/<your_image_name>.<image_extention>": "<feedback_type>"` (`<feedback_type>` can be either "positive" or "negative", any other strings will break the app and will cause it to crash).
 
-The `host` & `port` are used to established a connection to the `OpenVibe` server and can be changed to fit your preference.
+The `host` & `port` are used to establish a connection to the `OpenVibe` server and can be changed to fit your preference.
 
 ### Build
 
@@ -55,11 +56,11 @@ To build the app, download the source code. Make sure you have [maven](https://m
 
 ### Setup
 
-This section is meant for testing purposes as i know nothing about OpenVibe.
+This section is meant for testing purposes as I know nothing about OpenVibe.
 
 - OpenVibe requires python to work. Make sure you have it installed and configured as a PATH variable
 
-To setup OpenVibe for testing you'll need to setup an `acquisition server` and a `designer`. The server
+To set up OpenVibe for testing you'll need to set up an `acquisition server` and a `designer`. The server
 receives data from external applications through a TCP connection and sends it to the Designer. The Designer
 process the data using various 'boxes'.
 
@@ -77,7 +78,7 @@ process the data using various 'boxes'.
 
 - open a Designer instance
 - drag & drop an `Acquisition Client` box
-- make sure it listens to the port the Acquisition Server is set to, you can check the port by double clicking on the box
+- make sure it listens to the port the Acquisition Server is set to, you can check the port by double-clicking on the box
 - drag & drop a `Signal Display` box
 - connect the 2 boxes by drawing the lines between the Client's `Signal` output to the Signal's
   Display `Signal` input, and between the Client's `Stimulations` output to the Signal's Display `Stimulations`

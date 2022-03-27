@@ -32,17 +32,22 @@ public class WelcomePanel extends BorderPane {
   }
   
   private void construct() {
-    style("Welcome!", welcome, 40, TextAlignment.CENTER);
+    style("ברוך הבא!", welcome, 40, TextAlignment.RIGHT);
     String text = """
-            In this game you'll be presented with 2 screens for a short period of time. Each screen contains a number of circles. 
-            Your task is to identify the side which contains the most circles and choose it.
-            To choose a screen simply press the corresponding arrow on your keyboard, i.e. to choose the left screen - press the left arrow key.
-            The choosing phase starts as soon as the screen turns black and you can't see the circles anymore.
-            
-            Good luck!
-            """;
-    style(text, instructions, 30, TextAlignment.JUSTIFY);
-    style("Press any key to continue", last, 40, TextAlignment.CENTER);
+                  במשחק זה יוצג בפניך מסך לזמן קצר.
+                  המסך מחולק לשתיים כשכל צד מכיל מספר עיגולים מסויים.
+                  עליך לזהות את הצד בעל מספר העיגולים הגדול יותר ולבחור בו.
+                  הבחירה נעשית בזמן בו מוצג בפניך מסך ריק (מסך שחור).
+                  על מנת לבחור מסך השתמש במקשי החיצים במקלדת - חץ ימני לבחירת המסך הימני,
+                  חץ שמאלי לבחירת המסך השמאלי.
+
+
+                  בהצלחה!
+
+
+                  """;
+    style(text, instructions, 30, TextAlignment.CENTER);
+    style("לחץ על מקש כלשהו כדי להמשיך", last, 40, TextAlignment.CENTER);
   }
   
   private void style(String str, Text text, int fontSize, TextAlignment alignment) {
